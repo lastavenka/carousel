@@ -1,0 +1,42 @@
+.Carousel {
+  overflow: hidden;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.Carousel__inner {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  width: fit-content;
+}
+
+.Carousel__inner_in-transition {
+  transition: margin ease-out .45s;
+}
+
+.Carousel__slide {
+  width: 350px;
+}
+
+.Carousel__item {
+  height: 200px;
+  background-color: aqua;
+}
+
+.Carousel__item_red {
+  background-color: red;
+}
+.Carousel__item_blue {
+  background-color: blue;
+}
+.Carousel__item_green {
+  background-color: green;
+}
+.Carousel__item_black {
+  background-color: black;
+}
+.Carousel__item_yellow {
+  background-color: yellow;
+}

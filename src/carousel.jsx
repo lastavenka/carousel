@@ -5,14 +5,9 @@ export default class Carousel extends Component {
   constructor(props) {
     super(props);
 
-    const initialList = [];
-    for (let i = 0; i < this.props.size; i++) {
-      initialList.push(i);
-    }
-
     this.state = {
-      offset: 0,
-      items: initialList,
+      offset: '',
+      items: [...Array(this.props.size).keys()],
       inTransition: false
     };
   }
@@ -23,7 +18,6 @@ export default class Carousel extends Component {
   }
 
   prepareTransition(direction) {
-    console.log('before transition');
     const items = this.state.items;
     let nextIndex;
     if (direction === 'left') {
@@ -45,7 +39,9 @@ export default class Carousel extends Component {
         items: items,
         offset: newOffset
       },
-      () => {this.startTransition(direction); console.log(this.state)}
+      () => {
+        window.setTimeout(() => this.startTransition(direction), 10);
+      }
     );
   }
 
@@ -63,11 +59,10 @@ export default class Carousel extends Component {
 
     this.setState({
       offset: offset
-    });
+    }, () => this.finishTransition(direction));
   }
 
   finishTransition(direction) {
-    console.log('finish transition');
     this.refs.inner.removeEventListener(
       'transitionend',
       this.transitionEndHandler
@@ -79,7 +74,6 @@ export default class Carousel extends Component {
   }
 
   afterTransition(direction) {
-    console.log('after transition');
     const items = this.state.items.slice();
 
     const newItems =
@@ -125,7 +119,7 @@ export default class Carousel extends Component {
               : 'Carousel__inner'
           }
           style={{
-            marginLeft: this.state.offset
+            transform: `translateX(${this.state.offset}px)`
           }}
           ref="inner"
         >

@@ -45,7 +45,9 @@ export default class Carousel extends Component {
         items: items,
         offset: newOffset
       },
-      () => {this.startTransition(direction); console.log(this.state)}
+      () => {
+        window.setTimeout(() => this.startTransition(direction), 10); console.log(this.state);
+      }
     );
   }
 

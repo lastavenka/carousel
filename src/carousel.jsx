@@ -40,7 +40,7 @@ export default class Carousel extends Component {
         offset: newOffset
       },
       () => {
-        window.setTimeout(() => this.startTransition(direction), 10); console.log(this.state);
+        window.setTimeout(() => this.startTransition(direction), 10);
       }
     );
   }
@@ -59,7 +59,7 @@ export default class Carousel extends Component {
 
     this.setState({
       offset: offset
-    }, () => this.finishTransition(direction));
+    });
   }
 
   finishTransition(direction) {
@@ -119,7 +119,7 @@ export default class Carousel extends Component {
               : 'Carousel__inner'
           }
           style={{
-            transform: `translateX(${this.state.offset}px)`
+            marginLeft: this.state.offset
           }}
           ref="inner"
         >

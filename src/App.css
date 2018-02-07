@@ -1,5 +1,5 @@
 .Carousel {
-  /* overflow: hidden; */
+  overflow: hidden;
   margin-left: auto;
   margin-right: auto;
 }
@@ -13,7 +13,7 @@
 }
 
 .Carousel__inner_in-transition {
-  transition: transform ease-out .45s;
+  transition: margin-left ease-out .45s;
 }
 
 .Carousel__slide {

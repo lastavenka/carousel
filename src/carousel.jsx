@@ -8,11 +8,10 @@ export default class Carousel extends Component {
     this.state = {
       offset: '',
       items: [...Array(this.props.size).keys()],
-      inTransition: false,
-      timeout: false,
-      autoPlay: this.props.autoPlay ? true : false
+      inTransition: false
     };
-    this.turnAutoplay();
+
+    this.autoplay = this.props.autoPlay ? true : false;
   }
 
   defineSlideWidth() {
@@ -40,25 +39,22 @@ export default class Carousel extends Component {
   }
 
   turnAutoplay() {
-    if (this.state.autoPlay) {
-      setInterval(() => {
-        this.setState({
-          timeout: true,
-          autoplay: false
-        }),
-          this.prepareTransition('right');
+    if (this.autoplay) {
+      clearInterval(this.timer);
+      this.timer = setInterval(() => {
+        this.timeout = true;
+        this.prepareTransition('right');
       }, this.props.autoPlay);
     }
+    return;
   }
 
   handleClick(e) {
-    this.setState({
-      timeout: true,
-      autoPlay: false
-    });
-    if (this.state.timeout) {
+    if (this.timeout) {
       return;
     } else {
+      this.timeout = true;
+      this.autoplay = false;
       let direction = e.target.id;
       this.prepareTransition(direction);
     }
@@ -97,7 +93,7 @@ export default class Carousel extends Component {
   }
 
   transition(direction) {
-    const offset = direction === 'left' ? 0 : -this.defineSlideWidth();
+    const newOffset = direction === 'left' ? 0 : -this.defineSlideWidth();
     this.transitionEndHandler = () => this.finishTransition(direction);
     this.refs.inner.addEventListener(
       'transitionend',
@@ -105,7 +101,7 @@ export default class Carousel extends Component {
     );
 
     this.setState({
-      offset: offset
+      offset: newOffset
     });
   }
 
@@ -128,14 +124,14 @@ export default class Carousel extends Component {
 
     this.setState({
       items: newItems,
-      offset: 0,
-      timeout: false,
-      autoPlay: true
+      offset: 0
     });
+    this.timeout = false;
+    this.autoplay = this.props.autoPlay ? true : false;
   }
 
   render() {
-    console.log(this.state.autoPlay)
+    this.turnAutoplay();
     return (
       <div className="Carousel">
         <ul

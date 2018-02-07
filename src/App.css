@@ -17,10 +17,6 @@
   transition: margin-left ease-out .4s;
 }
 
-.Carousel__slide {
-  /* width: 350px; */
-}
-
 .Carousel__item {
   height: 200px;
   background-color: aqua;

@@ -8,13 +8,60 @@ export default class Carousel extends Component {
     this.state = {
       offset: '',
       items: [...Array(this.props.size).keys()],
-      inTransition: false
+      inTransition: false,
+      timeout: false,
+      autoPlay: this.props.autoPlay ? true : false
     };
+    this.turnAutoplay();
+  }
+
+  defineSlideWidth() {
+    const slide = document.querySelector('.Carousel__slide');
+    return slide.clientWidth;
+  }
+
+  renderSlides() {
+    let slides = [];
+
+    for (let i = 0; i < this.state.items.length; i++) {
+      slides.push(
+        <li
+          className="Carousel__slide"
+          key={i}
+          style={{
+            width: 100 / this.props.size + '%'
+          }}
+        >
+          {this.props.children[this.state.items[i]]}
+        </li>
+      );
+    }
+    return slides;
+  }
+
+  turnAutoplay() {
+    if (this.state.autoPlay) {
+      setInterval(() => {
+        this.setState({
+          timeout: true,
+          autoplay: false
+        }),
+          this.prepareTransition('right');
+      }, this.props.autoPlay);
+    }
   }
 
   handleClick(e) {
-    let direction = e.target.id;
-    this.prepareTransition(direction);
+    this.setState({
+      timeout: true,
+      autoPlay: false
+    });
+    if (this.state.timeout) {
+      return;
+    } else {
+      let direction = e.target.id;
+      this.prepareTransition(direction);
+    }
   }
 
   prepareTransition(direction) {
@@ -33,7 +80,7 @@ export default class Carousel extends Component {
       }
       items.push(nextIndex);
     }
-    let newOffset = direction === 'left' ? -this.props.itemWidth : 0;
+    let newOffset = direction === 'left' ? -this.defineSlideWidth() : 0;
     this.setState(
       {
         items: items,
@@ -50,7 +97,7 @@ export default class Carousel extends Component {
   }
 
   transition(direction) {
-    const offset = direction === 'left' ? 0 : -this.props.itemWidth;
+    const offset = direction === 'left' ? 0 : -this.defineSlideWidth();
     this.transitionEndHandler = () => this.finishTransition(direction);
     this.refs.inner.addEventListener(
       'transitionend',
@@ -81,52 +128,32 @@ export default class Carousel extends Component {
 
     this.setState({
       items: newItems,
-      offset: 0
+      offset: 0,
+      timeout: false,
+      autoPlay: true
     });
   }
 
-  renderSlides() {
-    let slides = [];
-
-    for (let i = 0; i < this.state.items.length; i++) {
-      slides.push(
-        <div
-          className="Carousel__slide"
-          key={i}
-          style={{
-            width: this.props.itemWidth
-          }}
-        >
-          {this.props.children[this.state.items[i]]}
-        </div>
-      );
-    }
-    return slides;
-  }
-
   render() {
+    console.log(this.state.autoPlay)
     return (
-      <div
-        className="Carousel"
-        style={{
-          width: this.props.itemWidth * this.props.size
-        }}
-      >
-        <div
+      <div className="Carousel">
+        <ul
           className={
             this.state.inTransition
               ? 'Carousel__inner Carousel__inner_in-transition'
               : 'Carousel__inner'
           }
           style={{
-            marginLeft: this.state.offset
+            marginLeft: this.state.offset,
+            width: 100 / this.props.size * this.state.items.length + '%'
           }}
           ref="inner"
         >
           {this.renderSlides()}
-        </div>
-        <Button direction="left" handleClick={e => this.handleClick(e)} />
-        <Button direction="right" handleClick={e => this.handleClick(e)} />
+        </ul>
+        <Button direction="left" onClick={e => this.handleClick(e)} />
+        <Button direction="right" onClick={e => this.handleClick(e)} />
       </div>
     );
   }

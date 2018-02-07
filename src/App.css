@@ -2,6 +2,7 @@
   overflow: hidden;
   margin-left: auto;
   margin-right: auto;
+  width: 50%;
 }
 
 .Carousel__inner {
@@ -9,15 +10,15 @@
   padding: 0;
   margin: 0;
   display: flex;
-  width: fit-content;
+  width: 100%;
 }
 
 .Carousel__inner_in-transition {
-  transition: margin-left ease-out .45s;
+  transition: margin-left ease-out .4s;
 }
 
 .Carousel__slide {
-  width: 350px;
+  /* width: 350px; */
 }
 
 .Carousel__item {

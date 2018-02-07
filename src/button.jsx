@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { Component } from 'react';
 
-const Button = ({ handleClick, direction }) => {
-  return (
-    <button
-      id={direction}
-      className={'Carousel__btn Carousel__btn_' + direction}
-      onClick={handleClick}
-    >
-      {direction}
-    </button>
-  );
+export default class Button extends Component {
+  render() {
+    return (
+      <button
+        className={'Carousel__btn Carousel__btn_' + this.props.direction}
+        onClick={this.props.onClick}
+        id={this.props.direction}
+      >
+        {this.props.direction}
+      </button>
+    );
+  }
 };
 
-export default Button;
